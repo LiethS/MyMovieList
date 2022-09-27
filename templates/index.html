@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>My Movie List</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+  <h1 style="text-align:center">My Movie List</h1>
+
+  <form action="/" method="POST">
+    <input type="text" name="content" id="content">
+    <input type="submit" value="Search">
+  </form>
+
+  <div class="row">
+    <div class="column">
+      <th>Search Results</th>
+      {% if tasks|length < 1 %} <h4>No movies found!</h4>
+        {% else %}
+      <table>
+        <tr>
+          <th>Movie</th>
+          <th>Year of Release</th>
+        </tr>
+        {% for result in results %}
+        <tr>
+          <td>{{ result.title }}</td>
+          <td>{{ result.year }}</td>
+          <td>
+            <a href="/add/{{result}}">Add</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+    </div>
+    <div class="column">
+      <th>Your Movie List</th>
+      {% if tasks|length < 1 %} <h4>There are no movies in your list!</h4>
+        {% else %}
+        <table>
+          <tr>
+            <th>Movie</th>
+            <th>Your Rating</th>
+          </tr>
+          {% for task in tasks %}
+          <tr>
+            <td>{{ task.content }}</td>
+            <td>{{ task.date_created.date() }}</td>
+            <td>
+              <a href="/delete/{{task.id}}">Delete</a>
+              <br>
+              <a href="/update/{{task.id}}">Update</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
